@@ -9,8 +9,6 @@ PROJECT_DIR="$( cd "$SCRIPT_DIR/../../.." && pwd )"
 
 cd "$PROJECT_DIR"
 
-git crypt unlock
-
 env
 
 ./go library:test:integration
