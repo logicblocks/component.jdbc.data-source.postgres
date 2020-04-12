@@ -16,11 +16,24 @@ Add the following to your `project.clj` file:
 
 ## Documentation
 
-TODO
+* [API Docs](https://logicblocks.github.io/component.jdbc-data-source.postgres/index.html)
 
 ## Usage
 
-TODO
+```clojure
+(require '[com.stuartsierra.component :as component])
+(require '[component.jdbc-data-source.postgres.core 
+            :as postgres-jdbc-data-source])
+
+(def system
+  (component/system-map
+    :data-source (postgres-jdbc-data-source/create
+                   {:host "localhost"
+                    :port 5432
+                    :user "admin"
+                    :password "super-secret-password"
+                    :database-name "test"})))
+```
 
 ## License
 
