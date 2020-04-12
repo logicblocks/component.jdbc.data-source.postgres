@@ -4,5 +4,5 @@
 set -e
 set -o pipefail
 
-apk --update add \
-    openjdk8
+apt-get update
+apt-get install -y --no-install-recommends openjdk-8-jdk

@@ -68,11 +68,11 @@ namespace :library do
     RakeLeiningen.define_test_task(
         name: :integration,
         type: 'integration',
-        profile: 'test',
-        prerequisites: [
-            'leiningen:ensure',
-            'database:test:provision'
-        ])
+        profile: 'test') do
+      unless ENV['CI'] == 'true'
+        Rake::Task['database:test:provision'].invoke
+      end
+    end
   end
 
   namespace :publish do
