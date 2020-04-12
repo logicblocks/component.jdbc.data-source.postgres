@@ -3,25 +3,35 @@ jobs:
   build:
     working_directory: ~/source
     docker:
-      - image: ruby:2.6.0
+      - image: docker:19.03.7-git
     steps:
       - checkout
+      - run: ./scripts/ci/common/install-bash.sh
+      - run: ./scripts/ci/common/install-ruby.sh
       - run: ./scripts/ci/common/install-openjdk.sh
       - run: ./scripts/ci/steps/build.sh
   test:
     working_directory: ~/source
     docker:
-      - image: ruby:2.6.0
+      - image: docker:19.03.7-git
     steps:
       - checkout
+      - setup_remote_docker
+      - run: ./scripts/ci/common/install-bash.sh
+      - run: ./scripts/ci/common/install-ruby.sh
       - run: ./scripts/ci/common/install-openjdk.sh
+      - run: ./scripts/ci/common/install-git-crypt.sh
+      - run: ./scripts/ci/common/install-gpg-key.sh
       - run: ./scripts/ci/steps/test.sh
   prerelease:
     working_directory: ~/source
     docker:
-      - image: ruby:2.6.0
+      - image: docker:19.03.7-git
     steps:
       - checkout
+      - setup_remote_docker
+      - run: ./scripts/ci/common/install-bash.sh
+      - run: ./scripts/ci/common/install-ruby.sh
       - run: ./scripts/ci/common/install-openjdk.sh
       - run: ./scripts/ci/common/install-git-crypt.sh
       - run: ./scripts/ci/common/install-gpg-key.sh
@@ -31,9 +41,12 @@ jobs:
   release:
     working_directory: ~/source
     docker:
-      - image: ruby:2.6.0
+      - image: docker:19.03.7-git
     steps:
       - checkout
+      - setup_remote_docker
+      - run: ./scripts/ci/common/install-bash.sh
+      - run: ./scripts/ci/common/install-ruby.sh
       - run: ./scripts/ci/common/install-openjdk.sh
       - run: ./scripts/ci/common/install-git-crypt.sh
       - run: ./scripts/ci/common/install-gpg-key.sh

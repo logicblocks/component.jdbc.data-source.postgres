@@ -1,22 +1,19 @@
 (ns component.jdbc-data-source.postgres.data-sources
   (:import
-    [clojure.lang Reflector]
-    [com.impossibl.postgres.jdbc PGDataSource]
-    [com.zaxxer.hikari HikariConfig
-                       HikariDataSource]))
+   [clojure.lang Reflector]
+   [com.impossibl.postgres.jdbc PGDataSource]
+   [com.zaxxer.hikari HikariConfig HikariDataSource]))
 
 (defn- doto-if-present [value thing method]
-  (if (not (nil? value))
-    (do
-      (Reflector/invokeInstanceMethod
-        thing (name method) (object-array [value]))
+  (if-not (nil? value)
+    (let [; satisfy linter
+          _ (Reflector/invokeInstanceMethod
+              thing (name method) (object-array [value]))]
       thing)
     thing))
 
 (defn- convert-if-present [value converter]
-  (if (not (nil? value))
-    (converter value)
-    value))
+  (if-not (nil? value) (converter value) value))
 
 (defn postgres-data-source
   [{:keys [host

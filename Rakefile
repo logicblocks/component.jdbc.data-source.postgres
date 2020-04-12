@@ -5,7 +5,7 @@ require 'rake_circle_ci'
 require 'rake_leiningen'
 require 'rake_docker'
 
-task :default => [:'library:check', :'library:test:unit']
+task :default => [:'library:check', :'library:test:integration']
 
 RakeLeiningen.define_installation_tasks(
     version: '2.9.1')
@@ -66,8 +66,8 @@ namespace :library do
 
   namespace :test do
     RakeLeiningen.define_test_task(
-        name: :unit,
-        type: 'unit',
+        name: :integration,
+        type: 'integration',
         profile: 'test',
         prerequisites: [
             'leiningen:ensure',

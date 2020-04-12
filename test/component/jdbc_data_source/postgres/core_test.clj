@@ -1,14 +1,14 @@
 (ns component.jdbc-data-source.postgres.core-test
   (:require
-    [clojure.test :refer :all]
+   [clojure.test :refer :all]
 
-    [com.stuartsierra.component :as component]
+   [com.stuartsierra.component :as component]
 
-    [component.jdbc-data-source.postgres.core :as data-source])
+   [component.jdbc-data-source.postgres.core :as data-source])
   (:import
-    [com.zaxxer.hikari HikariDataSource]
-    [java.util.concurrent TimeUnit]
-    [com.impossibl.postgres.jdbc PGDataSource]))
+   [com.zaxxer.hikari HikariDataSource]
+   [java.util.concurrent TimeUnit]
+   [com.impossibl.postgres.jdbc PGDataSource]))
 
 (defn configuration [& {:as overrides}]
   (merge

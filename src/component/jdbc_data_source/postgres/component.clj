@@ -1,12 +1,12 @@
 (ns component.jdbc-data-source.postgres.component
   (:require
-    [com.stuartsierra.component :as component]
+   [com.stuartsierra.component :as component]
 
-    [component.jdbc-data-source.postgres.data-sources :as data-sources])
+   [component.jdbc-data-source.postgres.data-sources :as data-sources])
   (:import [java.io Closeable]))
 
 (defrecord PostgresJdbcDataSource
-  [configuration data-source]
+           [configuration data-source]
   component/Lifecycle
 
   (start [component]
