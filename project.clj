@@ -5,7 +5,9 @@
   :license {:name "The MIT License"
             :url  "https://opensource.org/licenses/MIT"}
 
-  :dependencies []
+  :dependencies [[hikari-cp "2.11.0"]
+                 [com.impossibl.pgjdbc-ng/pgjdbc-ng "0.8.4"]
+                 [com.stuartsierra/component "1.0.0"]]
 
   :plugins [[lein-cloverage "1.1.2"]
             [lein-shell "0.5.0"]
@@ -21,7 +23,7 @@
   :profiles
   {:shared
    {:dependencies [[org.clojure/clojure "1.10.1"]
-                   [nrepl "0.6.0"]
+                   [nrepl "0.7.0"]
                    [eftest "0.5.9"]]}
    :dev
    [:shared {:source-paths ["dev"]

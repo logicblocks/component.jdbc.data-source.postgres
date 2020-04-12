@@ -3,6 +3,7 @@ require 'rake_ssh'
 require 'rake_github'
 require 'rake_circle_ci'
 require 'rake_leiningen'
+require 'rake_docker'
 
 task :default => [:'library:check', :'library:test:unit']
 
@@ -65,7 +66,13 @@ namespace :library do
 
   namespace :test do
     RakeLeiningen.define_test_task(
-        name: :unit, type: 'unit', profile: 'test')
+        name: :unit,
+        type: 'unit',
+        profile: 'test',
+        prerequisites: [
+            'leiningen:ensure',
+            'database:test:provision'
+        ])
   end
 
   namespace :publish do
@@ -76,5 +83,20 @@ namespace :library do
     RakeLeiningen.define_release_task(
         name: :release,
         profile: 'release')
+  end
+end
+
+namespace :database do
+  namespace :test do
+    RakeDocker.define_container_tasks(
+        container_name: 'test-database') do |t|
+      t.image = "postgres:11.5"
+      t.ports = ['5432:5432']
+      t.environment = [
+          "POSTGRES_DB=some-database",
+          "POSTGRES_PASSWORD=super-secret",
+          "POSTGRES_USER=admin"
+      ]
+    end
   end
 end
