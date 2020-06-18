@@ -30,7 +30,7 @@
 
 (deftest creates-connection-pooled-data-source
   (let [configuration (configuration)]
-    (with-started-component (data-source/create configuration)
+    (with-started-component (data-source/component configuration)
       (fn [component]
         (let [^HikariDataSource data-source (:data-source component)]
           (is (= (.getMaximumPoolSize data-source) 10))
@@ -54,7 +54,7 @@
           :connection-timeout (.toMillis TimeUnit/SECONDS 20)
           :maximum-lifetime (.toMillis TimeUnit/MINUTES 20)
           :auto-commit false)]
-    (with-started-component (data-source/create configuration)
+    (with-started-component (data-source/component configuration)
       (fn [component]
         (let [^HikariDataSource data-source (:data-source component)]
           (is (= (.getMaximumPoolSize data-source) 15))
@@ -70,7 +70,7 @@
 
 (deftest uses-postgres-data-source-internally
   (let [configuration (configuration)]
-    (with-started-component (data-source/create configuration)
+    (with-started-component (data-source/component configuration)
       (fn [component]
         (let [^HikariDataSource data-source (:data-source component)
               ^PGDataSource data-source (.getDataSource data-source)]
@@ -100,7 +100,7 @@
           :ssl-certificate-file "client.crt"
           :ssl-key-file "client.key"
           :ssl-key-password "some-password")]
-    (with-started-component (data-source/create configuration)
+    (with-started-component (data-source/component configuration)
       (fn [component]
         (let [^HikariDataSource data-source (:data-source component)
               ^PGDataSource data-source (.getDataSource data-source)]

@@ -2,8 +2,8 @@
   (:require
    [component.jdbc-data-source.postgres.component :as component]))
 
-(defn create
-  ([] (create {}))
+(defn component
+  ([] (component {}))
   ([configuration]
    (component/map->PostgresJdbcDataSource
      {:configuration configuration})))
