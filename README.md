@@ -11,7 +11,7 @@ A component providing a pooled postgres JDBC data source.
 Add the following to your `project.clj` file:
 
 ```clj
-[io.logicblocks/component.jdbc-data-source.postgres "0.1.1"]
+[io.logicblocks/component.jdbc-data-source.postgres "0.1.2"]
 ```
 
 ## Documentation
