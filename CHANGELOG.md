@@ -8,6 +8,15 @@ and this project adheres to
 
 ## [Unreleased]
 
+### Changes
+
+- The data source component is no longer pooled by default and the HikariCP 
+  data source has been extracted into a separate library.
+- `org.postgresql/postgresql` has been used in place of
+  `com.impossibl.pgjdbc-ng/pgjdbc-ng` for the PostgreSQL data source.
+- If a `cartus.core/Logger` is set on the component, the lifecycle actions are
+  logged.
+
 ## [0.1.2] — 2023-06-11
 
 ### Changes

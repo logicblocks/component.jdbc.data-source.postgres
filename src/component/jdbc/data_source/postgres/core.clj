@@ -1,6 +1,6 @@
-(ns component.jdbc-data-source.postgres.core
+(ns component.jdbc.data-source.postgres.core
   (:require
-   [component.jdbc-data-source.postgres.component :as component]))
+   [component.jdbc.data-source.postgres.component :as component]))
 
 (defn component
   ([] (component {}))
