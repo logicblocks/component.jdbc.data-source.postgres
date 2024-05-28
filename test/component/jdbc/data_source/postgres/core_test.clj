@@ -25,7 +25,7 @@
       (finally
         (swap! container component/stop)))))
 
-(deftest creates-data-source-with-default-parameters
+(deftest creates-postgres-data-source-with-default-parameters
   (let [configuration (configuration)]
     (with-started-component (data-source/component configuration)
       (fn [component]
@@ -47,7 +47,7 @@
           (is (nil? (.getSslKey data-source)))
           (is (nil? (.getSslPassword data-source))))))))
 
-(deftest uses-specified-configuration-for-data-source-when-provided
+(deftest uses-specified-configuration-for-postgres-data-source-when-provided
   (let [configuration
         (configuration
           :read-only true
