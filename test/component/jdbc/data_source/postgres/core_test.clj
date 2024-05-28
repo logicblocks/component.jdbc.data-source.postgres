@@ -27,9 +27,10 @@
 
 (deftest creates-postgres-data-source-with-default-parameters
   (let [configuration (configuration)]
-    (with-started-component (data-source/component configuration)
+    (with-started-component
+      (data-source/component configuration)
       (fn [component]
-        (let [^PGSimpleDataSource data-source (:data-source component)]
+        (let [^PGSimpleDataSource data-source (:instance component)]
           (is (= (into [] (.getServerNames data-source))
                 [(:host configuration)]))
           (is (= (into [] (.getPortNumbers data-source))
@@ -59,9 +60,10 @@
           :ssl-cert "client.crt"
           :ssl-key "client.key"
           :ssl-password "some-password")]
-    (with-started-component (data-source/component configuration)
+    (with-started-component
+      (data-source/component configuration)
       (fn [component]
-        (let [^PGSimpleDataSource data-source (:data-source component)]
+        (let [^PGSimpleDataSource data-source (:instance component)]
           (is (= (.getReadOnly data-source) true))
           (is (= (.getConnectTimeout data-source) 2))
           (is (= (.getLoginTimeout data-source) 5))

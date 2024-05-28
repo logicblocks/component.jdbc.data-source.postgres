@@ -25,7 +25,7 @@
      (fn [] ~@body)))
 
 (defrecord PostgresJdbcDataSource
-  [configuration logger data-source]
+  [configuration logger instance]
 
   component/Lifecycle
   (start [component]
@@ -33,10 +33,10 @@
       {:phases {:before :starting :after :started}
        :context {:configuration configuration}}
       (assoc component
-        :data-source (data-sources/postgres-data-source configuration))))
+        :instance (data-sources/postgres-data-source configuration))))
 
   (stop [component]
     (with-logging logger :component.jdbc.data-source.postgres
       {:phases {:before :stopping :after :stopped}
        :context {:configuration configuration}}
-      (assoc component :data-source nil))))
+      (assoc component :instance nil))))
