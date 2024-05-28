@@ -30,7 +30,7 @@
     (with-started-component
       (data-source/component configuration)
       (fn [component]
-        (let [^PGSimpleDataSource data-source (:instance component)]
+        (let [^PGSimpleDataSource data-source (:datasource component)]
           (is (= (into [] (.getServerNames data-source))
                 [(:host configuration)]))
           (is (= (into [] (.getPortNumbers data-source))
@@ -63,7 +63,7 @@
     (with-started-component
       (data-source/component configuration)
       (fn [component]
-        (let [^PGSimpleDataSource data-source (:instance component)]
+        (let [^PGSimpleDataSource data-source (:datasource component)]
           (is (= (.getReadOnly data-source) true))
           (is (= (.getConnectTimeout data-source) 2))
           (is (= (.getLoginTimeout data-source) 5))

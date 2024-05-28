@@ -4,6 +4,7 @@
    [com.stuartsierra.component :as component]
    [component.jdbc.data-source.postgres.data-sources :as data-sources])
   (:import
+   [clojure.lang Associative]
    [java.io Closeable]))
 
 (defn- with-logging-fn [logger target opts action-fn]
@@ -25,7 +26,7 @@
      (fn [] ~@body)))
 
 (defrecord PostgresJdbcDataSource
-  [configuration logger instance]
+  [configuration logger datasource]
 
   component/Lifecycle
   (start [component]
@@ -33,10 +34,10 @@
       {:phases {:before :starting :after :started}
        :context {:configuration configuration}}
       (assoc component
-        :instance (data-sources/postgres-data-source configuration))))
+        :datasource (data-sources/postgres-data-source configuration))))
 
   (stop [component]
     (with-logging logger :component.jdbc.data-source.postgres
       {:phases {:before :stopping :after :stopped}
        :context {:configuration configuration}}
-      (assoc component :instance nil))))
+      (assoc component :datasource nil))))
