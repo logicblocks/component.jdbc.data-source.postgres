@@ -2,7 +2,10 @@
   (:require
    [clojure.test :refer :all]
    [com.stuartsierra.component :as component]
-   [component.jdbc.data-source.postgres.core :as data-source])
+   [component.jdbc.data-source.postgres.core :as data-source]
+   [component.jdbc.data-source.postgres.configuration :as configuration]
+   [configurati.component :as conf-comp]
+   [configurati.core :as conf])
   (:import
    [java.util.concurrent TimeUnit]
    [org.postgresql.ds PGSimpleDataSource]))
@@ -28,7 +31,8 @@
 (deftest creates-postgres-data-source-with-default-parameters
   (let [configuration (configuration)]
     (with-started-component
-      (data-source/component configuration)
+      (data-source/component
+        {:configuration configuration})
       (fn [component]
         (let [^PGSimpleDataSource data-source (:datasource component)]
           (is (= (into [] (.getServerNames data-source))
@@ -61,7 +65,8 @@
           :ssl-key "client.key"
           :ssl-password "some-password")]
     (with-started-component
-      (data-source/component configuration)
+      (data-source/component
+        {:configuration configuration})
       (fn [component]
         (let [^PGSimpleDataSource data-source (:datasource component)]
           (is (= (.getReadOnly data-source) true))
@@ -73,3 +78,86 @@
           (is (= (.getSslCert data-source) "client.crt"))
           (is (= (.getSslKey data-source) "client.key"))
           (is (= (.getSslPassword data-source) "some-password")))))))
+
+(deftest configures-component-using-default-specification
+  (let [configuration
+        (configuration
+          :read-only true
+          :connect-timeout 2
+          :login-timeout 5
+          :socket-timeout 30
+          :ssl-mode "prefer"
+          :ssl-root-cert "ca.crt"
+          :ssl-cert "client.crt"
+          :ssl-key "client.key"
+          :ssl-password "some-password")
+        component (data-source/component)
+        component (conf-comp/configure component
+                    {:configuration-source (conf/map-source configuration)})]
+    (is (= configuration (:configuration component)))))
+
+(deftest allows-specification-to-be-overridden
+  (let [configuration
+        {:port          5555
+         :user          "ops"
+         :password      "super-secret"
+         :database-name "the-database"}
+        specification
+        (conf/configuration-specification
+          (conf/with-parameter :host :default "127.0.0.1")
+          (conf/with-parameter configuration/port-parameter)
+          (conf/with-parameter configuration/user-parameter)
+          (conf/with-parameter configuration/password-parameter)
+          (conf/with-parameter configuration/database-name-parameter))
+        component (data-source/component
+                    {:configuration-specification specification})
+        component (conf-comp/configure component
+                    {:configuration-source (conf/map-source configuration)})]
+    (is (= {:host          "127.0.0.1"
+            :port          5555
+            :user          "ops"
+            :password      "super-secret"
+            :database-name "the-database"}
+          (:configuration component)))))
+
+(deftest allows-default-source-to-be-provided
+  (let [default-source
+        (conf/map-source
+          {:host            "127.0.0.1"
+           :port            5566
+           :user            "admin"
+           :password        "super-secret"
+           :read-only       false
+           :connect-timeout 2
+           :login-timeout   5
+           :socket-timeout  30})
+        configure-time-source
+        (conf/map-source
+          {:user          "ops"
+           :password      "everyone-knows"
+           :database-name "the-database"
+           :read-only     true
+           :ssl-mode      "prefer"
+           :ssl-root-cert "ca.crt"
+           :ssl-cert      "client.crt"
+           :ssl-key       "client.key"
+           :ssl-password  "some-password"})
+        component (data-source/component
+                    {:configuration-source default-source})
+        component (conf-comp/configure component
+                    {:configuration-source configure-time-source})]
+    (is (= {:host            "127.0.0.1"
+            :port            5566
+            :user            "ops"
+            :password        "everyone-knows"
+            :database-name   "the-database"
+            :read-only       true
+            :connect-timeout 2
+            :login-timeout   5
+            :socket-timeout  30
+            :ssl-mode        "prefer"
+            :ssl-root-cert   "ca.crt"
+            :ssl-cert        "client.crt"
+            :ssl-key         "client.key"
+            :ssl-password    "some-password"}
+          (:configuration component)))))

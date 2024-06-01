@@ -21,6 +21,7 @@
   :dependencies
   [[io.logicblocks/cartus.core "0.1.18"]
    [io.logicblocks/component.support "0.1.0-RC2"]
+   [io.logicblocks/configurati "0.5.7-RC11"]
    [com.stuartsierra/component "1.1.0"]
    [org.postgresql/postgresql "42.6.0"]]
 

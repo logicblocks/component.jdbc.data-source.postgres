@@ -5,6 +5,12 @@
 (defn component
   ([]
    (component/map->PostgresJdbcDataSource {}))
-  ([configuration]
+  ([{:keys [configuration-specification
+            configuration-source
+            configuration
+            logger]}]
    (component/map->PostgresJdbcDataSource
-     {:configuration configuration})))
+     {:configuration-specification configuration-specification
+      :configuration-source        configuration-source
+      :configuration               configuration
+      :logger                      logger})))
