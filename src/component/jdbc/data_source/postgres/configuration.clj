@@ -1,10 +1,6 @@
 (ns component.jdbc.data-source.postgres.configuration
   (:require
-   [configurati.core :as conf]
-   [configurati.conversions :as conf-conv]))
-
-(defmethod conf-conv/convert-to :boolean [_ value]
-  (if (#{"true" true} value) true false))
+   [configurati.core :as conf]))
 
 (def host-parameter
   (conf/parameter :host
