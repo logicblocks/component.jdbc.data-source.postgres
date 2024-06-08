@@ -161,3 +161,40 @@
             :ssl-key         "client.key"
             :ssl-password    "some-password"}
           (:configuration component)))))
+
+(deftest allows-configuration-lookup-key-to-be-provided
+  (let [configuration-source
+        (conf/map-source
+          {:data-source-host            "localhost"
+           :data-source-port            5432
+           :data-source-user            "admin"
+           :data-source-password        "super-secret"
+           :data-source-database-name   "some-database"
+           :data-source-read-only       true
+           :data-source-connect-timeout 2
+           :data-source-login-timeout   5
+           :data-source-socket-timeout  30
+           :data-source-ssl-mode        "prefer"
+           :data-source-ssl-root-cert   "ca.crt"
+           :data-source-ssl-cert        "client.crt"
+           :data-source-ssl-key         "client.key"
+           :data-source-ssl-password    "some-password"})
+        component (data-source/component
+                    {:configuration-lookup-prefix :data-source})
+        component (conf-comp/configure component
+                    {:configuration-source configuration-source})]
+    (is (= {:host            "localhost"
+            :port            5432
+            :user            "admin"
+            :password        "super-secret"
+            :database-name   "some-database"
+            :read-only       true
+            :connect-timeout 2
+            :login-timeout   5
+            :socket-timeout  30
+            :ssl-mode        "prefer"
+            :ssl-root-cert   "ca.crt"
+            :ssl-cert        "client.crt"
+            :ssl-key         "client.key"
+            :ssl-password    "some-password"}
+          (:configuration component)))))
