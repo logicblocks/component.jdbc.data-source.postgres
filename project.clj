@@ -23,14 +23,14 @@
    [io.logicblocks/component.support "0.1.0-RC2"]
    [io.logicblocks/configurati "0.5.7-RC16"]
    [com.stuartsierra/component "1.1.0"]
-   [org.postgresql/postgresql "42.6.0"]]
+   [org.postgresql/postgresql "42.7.3"]]
 
   :profiles
   {:shared
    ^{:pom-scope :test}
    {:dependencies
     [[org.clojure/clojure "1.11.3"]
-     [nrepl "1.1.1"]
+     [nrepl "1.1.2"]
      [eftest "0.6.0"]]}
 
    :dev-specific
