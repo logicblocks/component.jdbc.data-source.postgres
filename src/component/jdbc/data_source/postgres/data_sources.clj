@@ -8,6 +8,7 @@
            user
            password
            database-name
+           default-schema
            read-only
            login-timeout
            connect-timeout
@@ -23,6 +24,7 @@
     (when (some? user) (.setUser ds user))
     (when (some? password) (.setPassword ds password))
     (when (some? database-name) (.setDatabaseName ds database-name))
+    (when (some? default-schema) (.setCurrentSchema ds default-schema))
     (when (some? read-only) (.setReadOnly ds read-only))
     (when (some? login-timeout) (.setLoginTimeout ds (int login-timeout)))
     (when (some? connect-timeout) (.setConnectTimeout ds (int connect-timeout)))

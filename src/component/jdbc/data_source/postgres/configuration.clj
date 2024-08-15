@@ -14,6 +14,9 @@
   (conf/parameter :password))
 (def database-name-parameter
   (conf/parameter :database-name))
+(def default-schema-parameter
+  (conf/parameter :default-schema
+    {:nilable true}))
 (def ssl-mode-parameter
   (conf/parameter :ssl-mode
     {:nilable true}))
@@ -49,6 +52,7 @@
     (conf/with-parameter user-parameter)
     (conf/with-parameter password-parameter)
     (conf/with-parameter database-name-parameter)
+    (conf/with-parameter default-schema-parameter)
     (conf/with-parameter ssl-mode-parameter)
     (conf/with-parameter ssl-root-cert-parameter)
     (conf/with-parameter ssl-cert-parameter)

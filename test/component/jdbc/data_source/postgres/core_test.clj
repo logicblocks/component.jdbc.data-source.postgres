@@ -47,6 +47,7 @@
           (is (= (.getConnectTimeout data-source) 10))
           (is (= (.getSocketTimeout data-source) 0))
           (is (nil? (.getSslMode data-source)))
+          (is (nil? (.getCurrentSchema data-source)))
           (is (nil? (.getSslRootCert data-source)))
           (is (nil? (.getSslCert data-source)))
           (is (nil? (.getSslKey data-source)))
@@ -55,6 +56,7 @@
 (deftest uses-specified-configuration-for-postgres-data-source-when-provided
   (let [configuration
         (configuration
+          :default-schema "some-schema"
           :read-only true
           :connect-timeout 2
           :login-timeout 5
@@ -69,6 +71,7 @@
         {:configuration configuration})
       (fn [component]
         (let [^PGSimpleDataSource data-source (:datasource component)]
+          (is (= (.getCurrentSchema data-source) "some-schema"))
           (is (= (.getReadOnly data-source) true))
           (is (= (.getConnectTimeout data-source) 2))
           (is (= (.getLoginTimeout data-source) 5))
@@ -82,6 +85,7 @@
 (deftest configures-component-using-default-specification
   (let [configuration
         (configuration
+          :default-schema "some-schema"
           :read-only true
           :connect-timeout 2
           :login-timeout 5
@@ -133,15 +137,16 @@
            :socket-timeout  30})
         configure-time-source
         (conf/map-source
-          {:user          "ops"
-           :password      "everyone-knows"
-           :database-name "the-database"
-           :read-only     true
-           :ssl-mode      "prefer"
-           :ssl-root-cert "ca.crt"
-           :ssl-cert      "client.crt"
-           :ssl-key       "client.key"
-           :ssl-password  "some-password"})
+          {:user           "ops"
+           :password       "everyone-knows"
+           :database-name  "the-database"
+           :default-schema "some-schema"
+           :read-only      true
+           :ssl-mode       "prefer"
+           :ssl-root-cert  "ca.crt"
+           :ssl-cert       "client.crt"
+           :ssl-key        "client.key"
+           :ssl-password   "some-password"})
         component (data-source/component
                     {:configuration-source default-source})
         component (conf-comp/configure component
@@ -151,6 +156,7 @@
             :user            "ops"
             :password        "everyone-knows"
             :database-name   "the-database"
+            :default-schema  "some-schema"
             :read-only       true
             :connect-timeout 2
             :login-timeout   5
@@ -170,6 +176,7 @@
            :data-source-user            "admin"
            :data-source-password        "super-secret"
            :data-source-database-name   "some-database"
+           :data-source-default-schema  "some-schema"
            :data-source-read-only       true
            :data-source-connect-timeout 2
            :data-source-login-timeout   5
@@ -188,6 +195,7 @@
             :user            "admin"
             :password        "super-secret"
             :database-name   "some-database"
+            :default-schema  "some-schema"
             :read-only       true
             :connect-timeout 2
             :login-timeout   5
