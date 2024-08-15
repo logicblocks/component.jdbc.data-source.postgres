@@ -206,3 +206,13 @@
             :ssl-key         "client.key"
             :ssl-password    "some-password"}
           (:configuration component)))))
+
+(deftest updates-schema-of-datasource
+  (let [configuration (configuration)]
+    (with-started-component
+      (data-source/component
+        {:configuration configuration})
+      (fn [component]
+        (data-source/change-schema component "new-schema")
+        (let [^PGSimpleDataSource data-source (:datasource component)]
+          (is (= (.getCurrentSchema data-source) "new-schema")))))))

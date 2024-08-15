@@ -1,6 +1,7 @@
 (ns component.jdbc.data-source.postgres.core
   (:require
-   [component.jdbc.data-source.postgres.component :as component]))
+   [component.jdbc.data-source.postgres.component :as component])
+  (:import (org.postgresql.ds PGSimpleDataSource)))
 
 (defn component
   ([]
@@ -16,3 +17,7 @@
       :configuration-lookup-prefix configuration-lookup-prefix
       :configuration               configuration
       :logger                      logger})))
+
+(defn change-schema [component schema]
+  (let [^PGSimpleDataSource datasource (:datasource component)]
+    (.setCurrentSchema datasource schema)))
