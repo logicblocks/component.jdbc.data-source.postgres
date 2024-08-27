@@ -1,4 +1,4 @@
-(defproject io.logicblocks/component.jdbc.data-source.postgres "0.1.3-RC18"
+(defproject io.logicblocks/component.jdbc.data-source.postgres "0.1.3-RC19"
   :description "A component providing a PostgreSQL JDBC data source."
   :url "https://github.com/logicblocks/component.jdbc.data-source.postgres"
 
